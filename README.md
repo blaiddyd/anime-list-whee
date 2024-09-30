@@ -14,7 +14,7 @@ npm run lint # linting
 You can now view the Anime Codex at [http://localhost:3000](http://localhost:3000)
 
 ## Project Structure
-- Everything lives inside of the `app` folder except for the `middleware.ts`. This is our middleware that intercepts requests going out to `/codex` & `/profile` and redirects users to login if needed.
+- Everything lives inside of the `app` folder.
 - We have the central `/app/layout.tsx` component which comes with the ombre background.
 - The homepage is not very interesting, just a button that takes the user to `/codex`
 - `/app/apolloClient.ts` has our Apollo Client setup. This can probably be moved to `app/lib` instead to take advantage of the invisible pages functionality that next has e.g. with the `_components` folder.
