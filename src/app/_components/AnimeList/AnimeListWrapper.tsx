@@ -1,6 +1,6 @@
 "use client";
 
-import { Box } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
 import { useEffect, useState, useCallback } from "react";
 import { useQuery, gql, ApolloError } from "@apollo/client";
 import { Suspense } from "react";
@@ -8,81 +8,14 @@ import Loader from "../Loader";
 import { Pagination } from "./Pagination";
 
 import {
+  MediaFragment,
   Page,
   PopularAnimeQueryQuery,
 } from "../../../../generated/gql/graphql";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { AnimeListInner } from "./AnimeListInner";
+import { AnimeCard } from "./AnimeCard";
 import { MediaList, PageInfo } from "./types";
-
-const POPULAR_ANIME_QUERY = gql`
-  query PopularAnimeQuery($page: Int, $perPage: Int) {
-    popular: Page(page: $page, perPage: $perPage) {
-      pageInfo {
-        total
-        currentPage
-        lastPage
-        hasNextPage
-        perPage
-      }
-
-      media(sort: POPULARITY_DESC, type: ANIME, isAdult: false) {
-        id
-        title {
-          userPreferred
-        }
-        coverImage {
-          extraLarge
-          large
-          color
-        }
-        startDate {
-          year
-          month
-          day
-        }
-        endDate {
-          year
-          month
-          day
-        }
-        bannerImage
-        season
-        seasonYear
-        description
-        type
-        format
-        status(version: 2)
-        episodes
-        duration
-        chapters
-        volumes
-        genres
-        isAdult
-        averageScore
-        popularity
-        mediaListEntry {
-          id
-          status
-        }
-        nextAiringEpisode {
-          airingAt
-          timeUntilAiring
-          episode
-        }
-        studios(isMain: true) {
-          edges {
-            isMain
-            node {
-              id
-              name
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+import { POPULAR_ANIME_QUERY } from "./queries";
 
 export const AnimeListWrapper = () => {
   const searchParams = useSearchParams();
@@ -92,10 +25,11 @@ export const AnimeListWrapper = () => {
   );
   const [animeData, setAnimeData] = useState<MediaList>();
   const [pageInfo, setPageInfo] = useState<PageInfo>();
+  const [loadingState, setLoadingState] = useState<boolean>(true);
   const [errorState, setErrorState] = useState<ApolloError>();
   const router = useRouter();
 
-  const { data, error, refetch } = useQuery<PopularAnimeQueryQuery>(
+  const { data, error, refetch, loading } = useQuery<PopularAnimeQueryQuery>(
     POPULAR_ANIME_QUERY,
     {
       variables: {
@@ -103,7 +37,7 @@ export const AnimeListWrapper = () => {
         perPage: 6,
       },
       onError(error) {
-          setErrorState(error)
+        setErrorState(error);
       },
       onCompleted(data) {
         setAnimeData(data.popular?.media);
@@ -112,12 +46,22 @@ export const AnimeListWrapper = () => {
     }
   );
 
+  useEffect(() => {
+    setLoadingState(loading);
+  }, [loading, setLoadingState]);
+
   const refetchData = useCallback(
     async (currentPageNumber: number) => {
-      const { data, error } = await refetch({ page: currentPageNumber, perPage: 6 });
-      setAnimeData(data.popular?.media)
-      setPageInfo(data.popular?.pageInfo)
-      setErrorState(error)
+      setLoadingState(true);
+      const { data, error, loading } = await refetch({
+        page: currentPageNumber,
+        perPage: 6,
+      });
+      // Not great at all but what can you do :/
+      setAnimeData(data.popular?.media);
+      setPageInfo(data.popular?.pageInfo);
+      setErrorState(error);
+      setLoadingState(loading);
     },
     [refetch]
   );
@@ -131,13 +75,27 @@ export const AnimeListWrapper = () => {
   }, [pathName, currentPage]);
 
   useEffect(() => {
-    refetchData(currentPage)
+    refetchData(currentPage);
   }, [currentPage]);
 
   return (
-    <Suspense fallback={<Loader />}>
-      <AnimeListInner animeList={animeData} />
-      <Pagination currentPage={currentPage} totalPages={pageInfo?.total || 0} />
-    </Suspense>
+    <div>
+      {loadingState ? (
+        <Loader />
+      ) : (
+        <Container maxW="2xl" centerContent>
+          {animeData?.map((anime) => (
+            <AnimeCard
+              anime={anime as unknown as MediaFragment}
+              key={(anime as unknown as MediaFragment).id}
+            />
+          ))}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={pageInfo?.total || 0}
+          />
+        </Container>
+      )}
+    </div>
   );
 };

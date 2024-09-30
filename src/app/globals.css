@@ -40,3 +40,22 @@ a {
     color-scheme: dark;
   }
 }
+
+.background {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  background-color: #be78ff;
+  background-image: url(https://64.media.tumblr.com/96cd83a9d2ae095eb021d4ab0d0ec0e5/tumblr_p4osemesbJ1qzm8dwo1_500.gifv);
+  .bg-image {
+    float: left;
+    bottom: 0;
+    position: fixed;
+  }
+}
+

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Container } from '@chakra-ui/react'
 import "./globals.css";
 import { ChakraWrapper, ApolloWrapper } from './providers'
 
@@ -27,8 +28,15 @@ function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <div className='background'>
+        <img className="bg-image" src="https://www.pngarts.com/files/8/Anime-PNG-Image-Transparent.png" />
+      </div>
         <ApolloWrapper>
-          <ChakraWrapper>{children}</ChakraWrapper>
+          <ChakraWrapper>
+           
+              {children}
+            
+            </ChakraWrapper>
         </ApolloWrapper>
       </body>
     </html>

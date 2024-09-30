@@ -1,19 +1,16 @@
-'use client'
+"use client";
 
 import Image from "next/image";
-import { gql } from "@apollo/client"
+import { Heading } from "@chakra-ui/react";
+import { gql } from "@apollo/client";
 import AnimeList from "../_components/AnimeList";
-
-const GET_POPULAR_ANIME = `
-  query GetPopularAnime {
-
-  }
-`
 
 export default function Recommendations() {
   return (
     <div>
-      <h1>Recommendations</h1>
+      <Heading as="h1" size="3xl" noOfLines={1} color='pink.500'>
+        *~All Anime~*
+      </Heading>
       <AnimeList />
     </div>
   );

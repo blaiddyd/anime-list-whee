@@ -7,7 +7,10 @@ const config: CodegenConfig = {
     generates: {
       './generated/gql/': {
         preset: 'client',
-        plugins: []
+        plugins: [],
+        config: {
+            inlineFragmentTypes: "combine"
+        }
       }
     }
   }

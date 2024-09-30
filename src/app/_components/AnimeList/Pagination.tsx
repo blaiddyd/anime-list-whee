@@ -29,6 +29,7 @@ export const Pagination = (props: PaginationProps) => {
         <Link
           href={`${pathName}?page=${page}`}
           className={currentPage === page ? "isActive" : ""}
+          key={page}
         >
           {page}
         </Link>
