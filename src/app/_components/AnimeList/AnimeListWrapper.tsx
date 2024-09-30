@@ -2,14 +2,12 @@
 
 import { Container } from "@chakra-ui/react";
 import { useEffect, useState, useCallback } from "react";
-import { useQuery, gql, ApolloError } from "@apollo/client";
-import { Suspense } from "react";
+import { useQuery } from "@apollo/client";
 import Loader from "../Loader";
 import { Pagination } from "./Pagination";
 
 import {
   MediaFragment,
-  Page,
   PopularAnimeQueryQuery,
 } from "../../../../generated/gql/graphql";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -26,19 +24,19 @@ export const AnimeListWrapper = () => {
   const [animeData, setAnimeData] = useState<MediaList>();
   const [pageInfo, setPageInfo] = useState<PageInfo>();
   const [loadingState, setLoadingState] = useState<boolean>(true);
-  const [errorState, setErrorState] = useState<ApolloError>();
+  // const [_errorState, setErrorState] = useState<ApolloError>();
   const router = useRouter();
 
-  const { data, error, refetch, loading } = useQuery<PopularAnimeQueryQuery>(
+  const { refetch, loading } = useQuery<PopularAnimeQueryQuery>(
     POPULAR_ANIME_QUERY,
     {
       variables: {
         page: 1,
         perPage: 6,
       },
-      onError(error) {
-        setErrorState(error);
-      },
+      // onError(error) {
+      //   setErrorState(error);
+      // },
       onCompleted(data) {
         setAnimeData(data.popular?.media);
         setPageInfo(data.popular?.pageInfo);
@@ -53,14 +51,14 @@ export const AnimeListWrapper = () => {
   const refetchData = useCallback(
     async (currentPageNumber: number) => {
       setLoadingState(true);
-      const { data, error, loading } = await refetch({
+      const { data, loading } = await refetch({
         page: currentPageNumber,
         perPage: 6,
       });
       // Not great at all but what can you do :/
       setAnimeData(data.popular?.media);
       setPageInfo(data.popular?.pageInfo);
-      setErrorState(error);
+      // setErrorState(error);
       setLoadingState(loading);
     },
     [refetch]

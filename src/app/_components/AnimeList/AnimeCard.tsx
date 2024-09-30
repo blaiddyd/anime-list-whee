@@ -1,9 +1,7 @@
 import {
   Box,
   Button,
-  ButtonGroup,
   Heading,
-  Image,
   Text,
   Card,
   CardHeader,
@@ -15,7 +13,6 @@ import {
 import { StarIcon } from "@chakra-ui/icons";
 import { useState, useCallback } from "react";
 
-import { MediaList, SingleAnimeItem } from "./types";
 import { MediaFragment } from "../../../../generated/gql/graphql";
 import { AnimeModal } from "./AnimeModal";
 import ImageWithFallback from "../ImageWithFallback";

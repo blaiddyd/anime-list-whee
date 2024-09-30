@@ -1,7 +1,5 @@
 import {
   Avatar,
-  Box,
-  Container,
   Wrap,
   WrapItem,
   Accordion,
@@ -17,7 +15,6 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Text,
   Tabs,
   TabList,
   TabPanels,
