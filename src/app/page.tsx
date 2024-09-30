@@ -2,16 +2,19 @@
 
 import styles from "./page.module.css";
 
+import { Button } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
 
 export default function Home() {
   return (
-    <div>
      
       <div className={styles.page}>
-        <h1>Welcome to your cute anime recommender~!</h1>
-        <Link href="/recommendations">Get started!</Link>
+          <Link href="/codex">
+            <Button colorScheme="pink" size='lg'>
+              Get started!
+            </Button>
+          </Link>
       </div>
-    </div>
+  
   );
 }

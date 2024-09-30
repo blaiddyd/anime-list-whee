@@ -101,9 +101,6 @@ export const AnimeModal = (props: AnimeModalProps) => {
             </TabPanel>
           </TabPanels>
           <ModalFooter>
-            <Button colorScheme="pink" mr={3}>
-              Add to favorites
-            </Button>
             <Button
               colorScheme="pink"
               mr={3}

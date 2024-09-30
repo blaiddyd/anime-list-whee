@@ -1,6 +1,6 @@
 "use client";
 
-import { Container } from "@chakra-ui/react";
+import { Container, useToast } from "@chakra-ui/react";
 import { useEffect, useState, useCallback } from "react";
 import { useQuery } from "@apollo/client";
 import Loader from "../Loader";
@@ -12,19 +12,18 @@ import {
 } from "../../../../generated/gql/graphql";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { AnimeCard } from "./AnimeCard";
-import { MediaList, PageInfo } from "./types";
+import { MediaList } from "./types";
 import { POPULAR_ANIME_QUERY } from "./queries";
 
 export const AnimeListWrapper = () => {
+  const toast = useToast()
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const [currentPage, setCurrentPage] = useState(
     parseFloat(searchParams.get("page") || "1")
   );
   const [animeData, setAnimeData] = useState<MediaList>();
-  const [pageInfo, setPageInfo] = useState<PageInfo>();
   const [loadingState, setLoadingState] = useState<boolean>(true);
-  // const [_errorState, setErrorState] = useState<ApolloError>();
   const router = useRouter();
 
   const { refetch, loading } = useQuery<PopularAnimeQueryQuery>(
@@ -34,12 +33,12 @@ export const AnimeListWrapper = () => {
         page: 1,
         perPage: 6,
       },
-      // onError(error) {
-      //   setErrorState(error);
-      // },
+      onError(error) {
+         toast({title: error.name || "Something went wrong while fetching anime data", status: "error" }) 
+      },
       onCompleted(data) {
         setAnimeData(data.popular?.media);
-        setPageInfo(data.popular?.pageInfo);
+        
       },
     }
   );
@@ -55,10 +54,7 @@ export const AnimeListWrapper = () => {
         page: currentPageNumber,
         perPage: 6,
       });
-      // Not great at all but what can you do :/
       setAnimeData(data.popular?.media);
-      setPageInfo(data.popular?.pageInfo);
-      // setErrorState(error);
       setLoadingState(loading);
     },
     [refetch]
@@ -70,11 +66,11 @@ export const AnimeListWrapper = () => {
 
   useEffect(() => {
     router.push(`${pathName}?page=${currentPage}`);
-  }, [pathName, currentPage]);
+  }, [pathName, currentPage, router]);
 
   useEffect(() => {
     refetchData(currentPage);
-  }, [currentPage]);
+  }, [currentPage, refetchData]);
 
   return (
     <div>
@@ -82,6 +78,10 @@ export const AnimeListWrapper = () => {
         <Loader />
       ) : (
         <Container maxW="2xl" centerContent>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={100}
+          />
           {animeData?.map((anime) => (
             <AnimeCard
               anime={anime as unknown as MediaFragment}
@@ -90,7 +90,7 @@ export const AnimeListWrapper = () => {
           ))}
           <Pagination
             currentPage={currentPage}
-            totalPages={pageInfo?.total || 0}
+            totalPages={100}
           />
         </Container>
       )}

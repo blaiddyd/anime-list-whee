@@ -1,0 +1,46 @@
+.pagination-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the pagination */
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    margin: 1rem 0; /* Add some margin for spacing */
+  }
+  
+  .pagination-container a {
+    margin: 0 5px;
+    padding: 0.5rem 0.75rem; /* Add padding for better touch targets */
+    text-decoration: none;
+    color: #0070f3; /* Change to your theme color */
+    transition: background-color 0.2s, color 0.2s; /* Smooth hover transition */
+  }
+  
+  .pagination-container a:hover {
+    background-color: rgba(0, 112, 243, 0.1); /* Light hover effect */
+    color: #005bb5; /* Darker color on hover */
+  }
+  
+  .pagination-container .isActive {
+    font-weight: bold;
+    text-decoration: underline;
+    color: #005bb5; /* Color for active link */
+  }
+  
+  .pagination-container span {
+    margin: 0 5px;
+  }
+  
+  /* Media queries for responsiveness */
+  @media (max-width: 768px) {
+    .pagination-container a {
+      padding: 0.3rem 0.5rem; /* Smaller padding for smaller screens */
+      font-size: 0.9rem; /* Smaller font size */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .pagination-container a {
+      margin: 0 2px; /* Reduced margin for very small screens */
+      font-size: 0.8rem; /* Even smaller font size */
+    }
+  }
+  
