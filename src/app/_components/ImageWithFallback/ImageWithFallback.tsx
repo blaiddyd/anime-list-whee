@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Image, { ImageProps } from 'next/image';
 
 type ImageWithFallbackProps = ImageProps & {
-    fallbackSrc: string;
+    fallbacksrc: string;
 }
 
 const ImageWithFallback = (props: ImageWithFallbackProps) => {
@@ -14,7 +14,7 @@ const ImageWithFallback = (props: ImageWithFallbackProps) => {
             {...props}
             src={imgSrc}
             onError={() => {
-                setImgSrc(props.fallbackSrc);
+                setImgSrc(props.fallbacksrc);
             }}
             style={isLoading ? {
                 filter: 'blur(20px)',

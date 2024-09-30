@@ -12,7 +12,11 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
-                hostname: 'www.pngarts.com'
+                hostname: '64.media.tumblr.com'
+            },
+            {
+                protocol: 'https',
+                hostname: 'media.tenor.com'
             }
         ]
     }

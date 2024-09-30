@@ -42,7 +42,7 @@ export const POPULAR_ANIME_QUERY = gql`
     description
     type
     format
-    reviews {
+    reviews (limit: 3) {
       edges {
         node {
           score

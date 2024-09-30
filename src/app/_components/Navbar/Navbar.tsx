@@ -16,6 +16,7 @@ const Navbar = () => {
       right="0"
       bg="purple.500"
       zIndex="1000"
+      marginBottom='20px'
       p={4}
     >
       <Flex align="center" justify="space-between">

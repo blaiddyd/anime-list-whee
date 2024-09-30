@@ -39,14 +39,14 @@ export const AnimeModal = (props: AnimeModalProps) => {
       isOpen={isOpen}
       onClose={onClose}
       motionPreset="slideInBottom"
-      size='xl'
+      size="xl"
     >
       <ModalOverlay
         bg="pinkAlpha.300"
         backdropFilter="blur(10px) hue-rotate(90deg)"
       />
-      <ModalContent padding='10px'>
-        <ModalHeader color='pink.500'>{anime.title?.userPreferred}</ModalHeader>
+      <ModalContent padding="10px">
+        <ModalHeader color="pink.500">{anime.title?.userPreferred}</ModalHeader>
         <Tabs size="md" variant="enclosed">
           <TabList>
             <Tab>About</Tab>
@@ -64,38 +64,36 @@ export const AnimeModal = (props: AnimeModalProps) => {
             <TabPanel>
               <ModalBody>
                 <Accordion>
-                  {anime.reviews?.edges
-                    ?.toSpliced(0, 3)
-                    .map((review, index) => (
-                      <AccordionItem key={`review-${index}`}>
-                        <AccordionButton>
-                          <Wrap spacing="30px">
-                            <WrapItem>
-                              {review?.node?.user?.avatar?.medium && (
-                                <Avatar
-                                  src={review?.node?.user?.avatar?.medium}
-                                />
-                              )}
-                            </WrapItem>
-                            <WrapItem>{review?.node?.user?.name}</WrapItem>
-                            <WrapItem>Score: {review?.node?.score}</WrapItem>
+                  {anime.reviews?.edges?.map((review, index) => (
+                    <AccordionItem key={`review-${index}`}>
+                      <AccordionButton>
+                        <Wrap spacing="30px">
+                          <WrapItem>
+                            {review?.node?.user?.avatar?.medium && (
+                              <Avatar
+                                src={review?.node?.user?.avatar?.medium}
+                              />
+                            )}
+                          </WrapItem>
+                          <WrapItem>{review?.node?.user?.name}</WrapItem>
+                          <WrapItem>Score: {review?.node?.score}</WrapItem>
 
-                            <WrapItem>
-                              {review?.node?.body && <AccordionIcon />}
-                            </WrapItem>
-                          </Wrap>
-                        </AccordionButton>
+                          <WrapItem>
+                            {review?.node?.body && <AccordionIcon />}
+                          </WrapItem>
+                        </Wrap>
+                      </AccordionButton>
 
-                        {review?.node?.body && (
-                          <AccordionPanel
-                            pb={4}
-                            dangerouslySetInnerHTML={{
-                              __html: review?.node?.body,
-                            }}
-                          />
-                        )}
-                      </AccordionItem>
-                    ))}
+                      {review?.node?.body && (
+                        <AccordionPanel
+                          pb={4}
+                          dangerouslySetInnerHTML={{
+                            __html: review?.node?.body,
+                          }}
+                        />
+                      )}
+                    </AccordionItem>
+                  ))}
                 </Accordion>
               </ModalBody>
             </TabPanel>

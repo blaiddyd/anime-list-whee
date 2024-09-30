@@ -11,19 +11,43 @@ import {
   useToast
 } from "@chakra-ui/react";
 import { useState, FormEvent } from "react";
+import { useRouter } from 'next/navigation';
+import { useSession } from "../providers";
 
 export default function LoginPage() {
   const toast = useToast();
+  const router = useRouter();
   const [loadingState, setLoadingState] = useState(false);
+  const [username, setUsername] = useState("")
+  const [jobTitle, setJobTitle] = useState("")
+  const { setSession } = useSession()
+
+  const validateInput = (input: string | null) => {
+    const regex = /^[a-zA-Z0-9- ]+$/;
+    return input !== null && regex.test(input);
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setLoadingState(true);
 
-    const formData = new FormData(e.currentTarget);
-    const username = formData.get("username");
-    const jobTitle = formData.get("job-title");
+    if (!username || !jobTitle) {
+      toast({
+        title: "Both fields are required.",
+        status: "error",
+      });
+      setLoadingState(false);
+      return;
+    }
+
+    if (!validateInput(username) || !validateInput(jobTitle)) {
+      toast({
+        title: "Invalid input. Only alphanumeric characters are allowed.",
+        status: "error",
+      });
+      setLoadingState(false);
+      return;
+    }
 
     const response = await fetch("/api/login", {
       method: "POST",
@@ -32,13 +56,17 @@ export default function LoginPage() {
       },
       body: JSON.stringify({ username, jobTitle }),
     });
+
     if (!response.ok) {
       toast({ title: "Failed :( Please try again", status: "error" });
     } else {
       toast({ title: "Success! Redirecting you to the Codex", status: "success" });
+      setSession(username, jobTitle)
+      router.push("/codex");
     }
     setLoadingState(false);
   };
+
   return (
     <Box
       display="flex"
@@ -61,11 +89,11 @@ export default function LoginPage() {
           <VStack spacing={4}>
             <FormControl isRequired>
               <FormLabel htmlFor="username">Username</FormLabel>
-              <Input type="text" name="username" id="username" placeholder="kingweeb97" />
+              <Input type="text" name="username" id="username" placeholder="kingweeb97" onChange={(e) => setUsername(e.target.value)}/>
             </FormControl>
             <FormControl isRequired>
               <FormLabel htmlFor="job-title">Job Title</FormLabel>
-              <Input type="text" name="job-title" id="job-title" placeholder="Your job title" />
+              <Input type="text" name="job-title" id="job-title" placeholder="Your job title" onChange={(e) => setJobTitle(e.target.value)}/>
             </FormControl>
             <Button
               type="submit"

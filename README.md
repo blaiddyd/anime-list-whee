@@ -1,27 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
 ## Getting Started
+If you have nvm installed, you can install the correct node version by running `nvm use`
+Otherwise, this project uses node version 18.20.2 
 
-
+```bash
+nvm use
+npm i
+npm run codegen # generate your GraphQL types
+npm run dev # run in dev mode with hot reload
+npm run build # make a production build
+npm run lint # linting 
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+You can now view the Anime Codex at [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
+- Everything lives inside of the `app` folder except for the `middleware.ts`. This is our middleware that intercepts requests going out to `/codex` & `/profile` and redirects users to login if needed.
+- We have the central `/app/layout.tsx` component which comes with the ombre background.
+- The homepage is not very interesting, just a button that takes the user to `/codex`
+- `/app/apolloClient.ts` has our Apollo Client setup. This can probably be moved to `app/lib` instead to take advantage of the invisible pages functionality that next has e.g. with the `_components` folder.
+- `api/` has all of our API routes. We only have one route `/api/login` which handles the creation/update of sessions
+- Pages
+    - `/app/login`
+    - `/app/profile`
+    - `/app/codex`
+- Components
+    - `/app/_components/AnimeList`: This is the chunky component that comes with all of the logic to load anime info
+    - `/app/_components/ImageWithFallback`: Next Image, but with a fallback URL that can be provided in case the image fails to load
+    - `/app/_components/Navbar`: Global navbar with navigation to `/codex` & `/profile`
+    - `/app/_components/Loader`: Cute little loader
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Future improvements
+- There is a significant amount of layout shift happening the main `/codex` page while loading in all the anime. This could be tremendously improved.
+- User info should not just be stored in a cookie but since we're not storing passwords for this app, the cookie way works better.
+- A more sophisticated state management (using Redux) in the future can save some double fetching of data. 
+- The forms on the `/login` and `/profile` pages can be combined to decrease code reuse.
+- The API route `/api/login` can be better named since it handles all of the sessions.
+- Unit tests with good ol RTL
+- E2E tests with Playwright or Cypress
+- Bug with the review accordions not closing after clicking, pretty bad user experience
+- Proper redirects :/ Because Next is pretty strict with that stuff...
+... And many more things I am definitely missing!
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The anime codex is deployed at [https://anime-list-whee.vercel.app](https://anime-list-whee.vercel.app)
+Pages
+- [https://anime-list-whee.vercel.app/codex](https://anime-list-whee.vercel.app/codex)
+- [https://anime-list-whee.vercel.app/profile](https://anime-list-whee.vercel.app/profile)
+- [https://anime-list-whee.vercel.app/login](https://anime-list-whee.vercel.app/login)

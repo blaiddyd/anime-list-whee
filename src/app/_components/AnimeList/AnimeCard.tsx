@@ -54,7 +54,7 @@ export const AnimeCard = (props: AnimeListInnerProps) => {
             }}
             width={700}
             height={500}
-            fallbackSrc="https://via.placeholder.com/700"
+            fallbacksrc="https://via.placeholder.com/700x500"
           />
         )}
         <CardBody>

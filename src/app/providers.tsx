@@ -7,13 +7,14 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import client from "./apolloClient";
 
 interface UserInfo {
-  username: string;
-  jobTitle: string;
+  username?: string;
+  jobTitle?: string;
 }
 
 interface SessionContextType {
   isLoggedIn: boolean;
   userInfo: UserInfo | null;
+  setSession: (username: string, jobTitle: string) => void;
 }
 
 export const ChakraWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -41,16 +42,21 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
     getSession();
   }, []);
 
+  const setSession = (username: string, jobTitle: string) => {
+    setIsLoggedIn(true);
+    setUserInfo({ username, jobTitle });
+  };
+
   return (
-    <SessionContext.Provider value={{ isLoggedIn, userInfo }}>
+    <SessionContext.Provider value={{ isLoggedIn, userInfo, setSession }}>
       {children}
     </SessionContext.Provider>
   );
 };
 
-
 export const useSession = () => {
   const context = useContext(SessionContext);
+  
   if (context === undefined) {
     throw new Error("useSession must be used within a SessionProvider");
   }

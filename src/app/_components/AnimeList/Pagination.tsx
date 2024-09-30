@@ -18,21 +18,18 @@ export const Pagination = (props: PaginationProps) => {
   useEffect(() => {
     const generatePages = () => {
       const pagesList: number[] = [];
-      const maxVisiblePages = 5; // Maximum number of visible page links
+      const maxVisiblePages = 5;
       const halfVisible = Math.floor(maxVisiblePages / 2);
 
-      // Start and end range for pagination
       let start = Math.max(1, currentPage - halfVisible);
       let end = Math.min(totalPages, currentPage + halfVisible);
 
-      // Adjust start and end if near boundaries
       if (currentPage <= halfVisible) {
         end = Math.min(maxVisiblePages, totalPages);
       } else if (currentPage + halfVisible > totalPages) {
         start = Math.max(totalPages - maxVisiblePages + 1, 1);
       }
 
-      // Populate the pages array
       for (let i = start; i <= end; i++) {
         pagesList.push(i);
       }
