@@ -38,7 +38,7 @@ You can now view the Anime Codex at [http://localhost:3000](http://localhost:300
 - Unit tests with good ol RTL
 - E2E tests with Playwright or Cypress
 - Bug with the review accordions not closing after clicking, pretty bad user experience
-- Proper redirects :/ Because Next is pretty strict with that stuff...
+- Proper redirects :/ Because next middleware is too a bit strange with cookie caching and such
 ... And many more things I am definitely missing!
 
 ## Deployment

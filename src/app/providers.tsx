@@ -33,7 +33,7 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
 
   useEffect(() => {
     const getSession = async () => {
-      const response = await fetch("/api/login");
+      const response = await fetch("/api/login", { credentials: 'include' });
       const sessionInfo = (await response.json()).session;
       setIsLoggedIn(!!sessionInfo);
       setUserInfo(sessionInfo ? JSON.parse(sessionInfo.value) : null);
@@ -45,6 +45,7 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
   const setSession = (username: string, jobTitle: string) => {
     setIsLoggedIn(true);
     setUserInfo({ username, jobTitle });
+
   };
 
   return (

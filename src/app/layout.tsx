@@ -1,4 +1,6 @@
-import type { Metadata } from "next";
+"use client";
+
+import { Suspense } from "react";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ChakraWrapper, ApolloWrapper, SessionProvider } from "./providers";
@@ -16,11 +18,6 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
-  title: "Anime Codex",
-  description: "Just a website with lots of anime",
-};
-
 function RootLayout({
   children,
 }: Readonly<{
@@ -32,18 +29,20 @@ function RootLayout({
         <ApolloWrapper>
           <SessionProvider>
             <ChakraWrapper>
-              <Navbar />
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                flexDir="column"
-                height="100%"
-                padding="4"
-                bgGradient="linear(to-r, purple.500, pink.500)"
-              >
-                {children}
-              </Box>
+              <Suspense>
+                <Navbar />
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  flexDir="column"
+                  height="100%"
+                  padding="4"
+                  bgGradient="linear(to-r, purple.500, pink.500)"
+                >
+                  {children}
+                </Box>
+              </Suspense>
             </ChakraWrapper>
           </SessionProvider>
         </ApolloWrapper>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -11,15 +11,23 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
+import { useRouter } from "next/navigation"; // Import useRouter
 import { useSession } from "../providers";
 
 const ProfilePage = () => {
   const toast = useToast();
+  const router = useRouter(); // Initialize useRouter
 
   const { userInfo, setSession } = useSession();
   const [username, setUsername] = useState(userInfo?.username || "");
   const [jobTitle, setJobTitle] = useState(userInfo?.jobTitle || "");
   const [loadingState, setLoadingState] = useState(false);
+
+  useEffect(() => {
+    if (!userInfo) {
+      router.push("/login?redirect=profile");
+    }
+  }, [userInfo, router]);
 
   const validateInput = (input: string) => {
     const regex = /^[a-zA-Z0-9- ]+$/;
@@ -28,7 +36,7 @@ const ProfilePage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!username || !jobTitle) {
       toast({
         title: "Both fields are required.",
