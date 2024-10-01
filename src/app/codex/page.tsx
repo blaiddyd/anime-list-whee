@@ -15,6 +15,10 @@ export default function Codex() {
     }
   }, [userInfo, router]);
 
+  if (!userInfo) {
+    return null
+  }
+
   return <AnimeList />
   
 }
