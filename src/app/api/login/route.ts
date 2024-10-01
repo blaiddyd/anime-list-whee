@@ -27,10 +27,6 @@ async function postHandler(req: Request) {
 async function getHandler() {
   const session = cookies().get("session");
 
-   if (!session) {
-    return NextResponse.json({ message: "No session found" }, { status: 401 });
-  }
-
   return NextResponse.json({ session }, { status: 200 });
 }
 

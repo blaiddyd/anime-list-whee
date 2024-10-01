@@ -39,6 +39,7 @@ You can now view the Anime Codex at [http://localhost:3000](http://localhost:300
 - E2E tests with Playwright or Cypress
 - Bug with the review accordions not closing after clicking, pretty bad user experience
 - Proper redirects :/ Because next middleware is too a bit strange with cookie caching and such
+- On vercel, for some reason going to a `/codex?page={number}` directly causes the auth state to be null. I could not reproduce this in local production builds and I'm not like super familiar with the vercel environment so not sure what the issue is
 ... And many more things I am definitely missing!
 
 ## Deployment

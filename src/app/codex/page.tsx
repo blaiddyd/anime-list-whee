@@ -1,19 +1,21 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from '../providers';
 import AnimeList from '../_components/AnimeList';
 
 export default function Codex() {
   const router = useRouter();
+  const searchParams = useSearchParams()
   const { userInfo } = useSession(); 
 
   useEffect(() => {
     if (!userInfo) {
-      router.push('/login?redirect=codex');
+      const pageParam = searchParams.get('page') || '1'
+      router.push(`/login?redirect=${encodeURIComponent(`codex?page=${pageParam}`)}`);
     }
-  }, [userInfo, router]);
+  }, [userInfo, router, searchParams]);
 
   if (!userInfo) {
     return null
